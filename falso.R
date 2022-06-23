@@ -1,3 +1,4 @@
+## Definindo bibliotecas
 library(HiddenMarkov)
 library(HMM)
 
