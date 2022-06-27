@@ -63,7 +63,7 @@ dif.trans10 <-  matrix(nrow=R,ncol=length(K))
 for(k in 1:length(K)){
   for(r in 1:R){
     amostra <- simHMM(hmm, n)
-    bwF = baumWelch(hmmF,obs,K[k])
+    bwF = baumWelch(hmmF,amostra$observation,K[k])
     dif.trans00[r,k] <- ((bwF$hmm$transProbs - hmmF$transProbs)[,1])[1]
     dif.trans10[r,k] <- ((bwF$hmm$transProbs - hmmF$transProbs)[,1])[2]
     dif.emission0a[r,k] <- ((bwF$hmm$emissionProbs - hmmF$emissionProbs)[,1])[1]

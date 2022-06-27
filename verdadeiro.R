@@ -29,21 +29,21 @@ hmmV = initHMM(c("0","1"), c("a","b"), c(.5,.5), transProbs=Av, emissionProbs=Bv
 # definindo BW com HMM "VERDADEIRO"
   # note que estamos usando as observações verdadeira -> obs
 
-bwV = baumWelch(hmmV,obs,100)
-bwVstates = (bwV$hmm$states)
-bwVsymbols = (bwV$hmm$symbols)
-bwVstartprobs = (bwV$hmm$startProbs)
-bwVtransprobs = (bwV$hmm$transProbs)
-bwVemissionprobs = (bwV$hmm$emissionProbs)
+#bwV = baumWelch(hmmV,obs,100)
+#bwVstates = (bwV$hmm$states)
+#bwVsymbols = (bwV$hmm$symbols)
+#bwVstartprobs = (bwV$hmm$startProbs)
+#bwVtransprobs = (bwV$hmm$transProbs)
+#bwVemissionprobs = (bwV$hmm$emissionProbs)
 
 
 ## agora vamos rodar o BW
 # n. de repetições do Baum-Welch k variando
 K <- c(50,75,100,150,200)
-
+#k <- c(5, 10, 15, 20, 25)
 #tamanho da amostra
 n <- 1000
-
+#n <- 100
 # R numero de repetiçõees
 R <- 10
 #cada linha é referente a um estado/obs
@@ -57,11 +57,16 @@ dif.trans10 <-  matrix(nrow=R,ncol=length(K))
 for(k in 1:length(K)){
   for(r in 1:R){
     amostra <- simHMM(hmm, n)
-    bwV = baumWelch(hmmV,obs,K[k])
-    dif.trans00[r,k] <- ((bwV$hmm$transProbs - hmmV$transProbs)[,1])[1]
-    dif.trans10[r,k] <- ((bwV$hmm$transProbs - hmmV$transProbs)[,1])[2]
-    dif.emission0a[r,k] <- ((bwV$hmm$emissionProbs - hmmV$emissionProbs)[,1])[1]
-    dif.emission1a[r,k] <- ((bwV$hmm$emissionProbs - hmmV$emissionProbs)[,1])[2]
+    bwV = baumWelch(hmmV,amostra$observation,K[k])
+    bwVstates = (bwV$hmm$states)
+    bwVsymbols = (bwV$hmm$symbols)
+    bwVstartprobs = (bwV$hmm$startProbs)
+    bwVtransprobs = (bwV$hmm$transProbs)
+    bwVemissionprobs = (bwV$hmm$emissionProbs)
+    dif.trans00[r,k] <- ((bwV$hmm$transProbs - hmm$transProbs)[,1])[1]
+    dif.trans10[r,k] <- ((bwV$hmm$transProbs - hmm$transProbs)[,1])[2]
+    dif.emission0a[r,k] <- ((bwV$hmm$emissionProbs - hmm$emissionProbs)[,1])[1]
+    dif.emission1a[r,k] <- ((bwV$hmm$emissionProbs - hmm$emissionProbs)[,1])[2]
     print(c(k,r))
   }
 }
@@ -78,16 +83,16 @@ ymin <- min(abs(med.trans00),abs(med.trans10),abs(med.emission0a),abs(med.emissi
 
 par(mfrow=c(1,2))
 plot(K,abs(med.trans00),type="b",xlab="K",
-     ylab="diferença",ylim=c(ymin,ymax),col="blue3",pch=19,main="prob. transição")
+     ylab="diferença",ylim=c(ymin,ymax),col="blue3",pch=19,main="probabilidade de transição",cex.main=0.9)
 lines(K,abs(med.trans10),type="b",col="red3",pch=17)
-legend(135,0.18, legend=c("0-0","1-0"),
+legend(130,0.013, legend=c("0-0","1-0"),
        col=c("blue3","red3"), lty=c(1,1), cex=0.8, pch=c(19,17),pt.cex=1,
        box.lty=0,seg.len=3)
 
 plot(K,abs(med.emission0a),type="b",xlab="K",
-     ylab="diferença",ylim=c(ymin,ymax),col="blue3",pch=19,main="prob. emissão")
+     ylab="diferença",ylim=c(ymin,ymax),col="blue3",pch=19,main="probabilidade de emissão",cex.main=0.9)
 lines(K,abs(med.emission1a),type="b",col="red3",pch=17)
-legend(140,0.18, legend=c("0-a","1-a"),
+legend(140,0.045, legend=c("0-a","1-a"),
        col=c("blue3","red3"), lty=c(1,1), cex=0.8, pch=c(19,17),pt.cex=1,
        box.lty=0,seg.len=3)
 
@@ -107,11 +112,16 @@ R <- 10
 for(i in 1:length(N)){
   for(r in 1:R){
     amostra <- simHMM(hmm, N[i])
-    bwV = baumWelch(hmmV,obs,k)
-    dif.trans00[r,i] <- ((bwV$hmm$transProbs - hmmV$transProbs)[,1])[1]
-    dif.trans10[r,i] <- ((bwV$hmm$transProbs - hmmV$transProbs)[,1])[2]
-    dif.emission0a[r,i] <- ((bwV$hmm$emissionProbs - hmmV$emissionProbs)[,1])[1]
-    dif.emission1a[r,i] <- ((bwV$hmm$emissionProbs - hmmV$emissionProbs)[,1])[2]
+    bwV = baumWelch(hmmV,amostra$observation,k)
+    bwVstates = (bwV$hmm$states)
+    bwVsymbols = (bwV$hmm$symbols)
+    bwVstartprobs = (bwV$hmm$startProbs)
+    bwVtransprobs = (bwV$hmm$transProbs)
+    bwVemissionprobs = (bwV$hmm$emissionProbs)
+    dif.trans00[r,i] <- ((bwV$hmm$transProbs - hmm$transProbs)[,1])[1]
+    dif.trans10[r,i] <- ((bwV$hmm$transProbs - hmm$transProbs)[,1])[2]
+    dif.emission0a[r,i] <- ((bwV$hmm$emissionProbs - hmm$emissionProbs)[,1])[1]
+    dif.emission1a[r,i] <- ((bwV$hmm$emissionProbs - hmm$emissionProbs)[,1])[2]
     print(c(i,r))
   }
 }
