@@ -30,13 +30,6 @@ hmmF = initHMM(c("0","1"), c("a", "b"), c(.4,.6), transProbs = Af,
 # definindo BW com HMM "VERDADEIRO"
   # note que estamos usando as observações verdadeira -> obs
 
-bwF = baumWelch(hmmF,obs,100)
-bwFstates = (bwF$hmm$states)
-bwFsymbols = (bwF$hmm$symbols)
-bwFstartprobs = (bwF$hmm$startProbs)
-bwFtransprobs = (bwF$hmm$transProbs)
-bwFemissionprobs = (bwF$hmm$emissionProbs)
-
 
 hmmBW = initHMM(c("0","1"), c("a", "b"), c(.1,.9), transProbs = bwF$hmm$transProbs,
                 emissionProbs = bwF$hmm$emissionprobs)
@@ -64,10 +57,15 @@ for(k in 1:length(K)){
   for(r in 1:R){
     amostra <- simHMM(hmm, n)
     bwF = baumWelch(hmmF,amostra$observation,K[k])
-    dif.trans00[r,k] <- ((bwF$hmm$transProbs - hmmF$transProbs)[,1])[1]
-    dif.trans10[r,k] <- ((bwF$hmm$transProbs - hmmF$transProbs)[,1])[2]
-    dif.emission0a[r,k] <- ((bwF$hmm$emissionProbs - hmmF$emissionProbs)[,1])[1]
-    dif.emission1a[r,k] <- ((bwF$hmm$emissionProbs - hmmF$emissionProbs)[,1])[2]
+    bwFstates = (bwF$hmm$states)
+    bwFsymbols = (bwF$hmm$symbols)
+    bwFstartprobs = (bwF$hmm$startProbs)
+    bwFtransprobs = (bwF$hmm$transProbs)
+    bwFemissionprobs = (bwF$hmm$emissionProbs)
+    dif.trans00[r,k] <- ((bwF$hmm$transProbs - hmm$transProbs)[,1])[1]
+    dif.trans10[r,k] <- ((bwF$hmm$transProbs - hmm$transProbs)[,1])[2]
+    dif.emission0a[r,k] <- ((bwF$hmm$emissionProbs - hmm$emissionProbs)[,1])[1]
+    dif.emission1a[r,k] <- ((bwF$hmm$emissionProbs - hmm$emissionProbs)[,1])[2]
     print(c(k,r))
   }
 }
@@ -84,16 +82,16 @@ ymin <- min(abs(med.trans00),abs(med.trans10),abs(med.emission0a),abs(med.emissi
 
 par(mfrow=c(1,2))
 plot(K,abs(med.trans00),type="b",xlab="K",
-     ylab="diferença",ylim=c(ymin,ymax),col="blue3",pch=19,main="prob. transição")
+     ylab="diferença",ylim=c(ymin,ymax),col="blue3",pch=19,main="probabilidade de transição",cex.main=0.9)
 lines(K,abs(med.trans10),type="b",col="red3",pch=17)
-legend(140,0.25, legend=c("0-0","1-0"),
+legend(120,0.16, legend=c("0-0","1-0"),
        col=c("blue3","red3"), lty=c(1,1), cex=0.8, pch=c(19,17),pt.cex=1,
        box.lty=0,seg.len=3)
 
 plot(K,abs(med.emission0a),type="b",xlab="K",
-     ylab="diferença",ylim=c(ymin,ymax),col="blue3",pch=19,main="prob. emissão")
+     ylab="diferença",ylim=c(ymin,ymax),col="blue3",pch=19,main="probabilidade de emissão",cex.main=0.9)
 lines(K,abs(med.emission1a),type="b",col="red3",pch=17)
-legend(140,0.28, legend=c("0-a","1-a"),
+legend(130,0.08, legend=c("0-a","1-a"),
        col=c("blue3","red3"), lty=c(1,1), cex=0.8, pch=c(19,17),pt.cex=1,
        box.lty=0,seg.len=3)
 
@@ -113,11 +111,16 @@ R <- 10
 for(i in 1:length(N)){
   for(r in 1:R){
     amostra <- simHMM(hmm, N[i])
-    bwF = baumWelch(hmmF,obs,k)
-    dif.trans00[r,i] <- ((bwF$hmm$transProbs - hmmF$transProbs)[,1])[1]
-    dif.trans10[r,i] <- ((bwF$hmm$transProbs - hmmF$transProbs)[,1])[2]
-    dif.emission0a[r,i] <- ((bwF$hmm$emissionProbs - hmmF$emissionProbs)[,1])[1]
-    dif.emission1a[r,i] <- ((bwF$hmm$emissionProbs - hmmF$emissionProbs)[,1])[2]
+    bwF = baumWelch(hmmF,amostra$observation,k)
+    bwFstates = (bwF$hmm$states)
+    bwFsymbols = (bwF$hmm$symbols)
+    bwFstartprobs = (bwF$hmm$startProbs)
+    bwFtransprobs = (bwF$hmm$transProbs)
+    bwFemissionprobs = (bwF$hmm$emissionProbs)
+    dif.trans00[r,i] <- ((bwF$hmm$transProbs - hmm$transProbs)[,1])[1]
+    dif.trans10[r,i] <- ((bwF$hmm$transProbs - hmm$transProbs)[,1])[2]
+    dif.emission0a[r,i] <- ((bwF$hmm$emissionProbs - hmm$emissionProbs)[,1])[1]
+    dif.emission1a[r,i] <- ((bwF$hmm$emissionProbs - hmm$emissionProbs)[,1])[2]
     print(c(i,r))
   }
 }
@@ -133,16 +136,16 @@ ymin <- min(abs(med.trans00),abs(med.trans10),abs(med.emission0a),abs(med.emissi
 
 par(mfrow=c(1,2))
 plot(N,abs(med.trans00),type="b",xlab="N",
-     ylab="diferença",ylim=c(ymin,ymax),col="blue3",pch=19,main="prob. transição")
+     ylab="diferença",ylim=c(ymin,ymax),col="blue3",pch=19,main="probabilidade de transição",cex.main=0.9)
 lines(N,abs(med.trans10),type="b",col="red3",pch=17)
-legend(2200,0.25, legend=c("0-0","1-0"),
+legend(2200,0.2, legend=c("0-0","1-0"),
        col=c("blue3","red3"), lty=c(1,1), cex=0.8, pch=c(19,17),pt.cex=1,
        box.lty=0,seg.len=3)
 
 plot(N,abs(med.emission0a),type="b",xlab="N",
-     ylab="diferença",ylim=c(ymin,ymax),col="blue3",pch=19,main="prob. emissão")
+     ylab="diferença",ylim=c(ymin,ymax),col="blue3",pch=19,main="probabilidade de emissão",cex.main=0.9)
 lines(N,abs(med.emission1a),type="b",col="red3",pch=17)
-legend(2200,0.6, legend=c("0-a","1-a"),
+legend(2200,0.1, legend=c("0-a","1-a"),
        col=c("blue3","red3"), lty=c(1,1), cex=0.8, pch=c(19,17),pt.cex=1,
        box.lty=0,seg.len=3)
 

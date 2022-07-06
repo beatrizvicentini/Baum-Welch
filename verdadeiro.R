@@ -85,14 +85,14 @@ par(mfrow=c(1,2))
 plot(K,abs(med.trans00),type="b",xlab="K",
      ylab="diferença",ylim=c(ymin,ymax),col="blue3",pch=19,main="probabilidade de transição",cex.main=0.9)
 lines(K,abs(med.trans10),type="b",col="red3",pch=17)
-legend(130,0.013, legend=c("0-0","1-0"),
+legend(130,0.08, legend=c("0-0","1-0"),
        col=c("blue3","red3"), lty=c(1,1), cex=0.8, pch=c(19,17),pt.cex=1,
        box.lty=0,seg.len=3)
 
 plot(K,abs(med.emission0a),type="b",xlab="K",
      ylab="diferença",ylim=c(ymin,ymax),col="blue3",pch=19,main="probabilidade de emissão",cex.main=0.9)
 lines(K,abs(med.emission1a),type="b",col="red3",pch=17)
-legend(140,0.045, legend=c("0-a","1-a"),
+legend(140,0.04, legend=c("0-a","1-a"),
        col=c("blue3","red3"), lty=c(1,1), cex=0.8, pch=c(19,17),pt.cex=1,
        box.lty=0,seg.len=3)
 
@@ -137,17 +137,18 @@ ymin <- min(abs(med.trans00),abs(med.trans10),abs(med.emission0a),abs(med.emissi
 
 par(mfrow=c(1,2))
 plot(N,abs(med.trans00),type="b",xlab="N",
-     ylab="diferença",ylim=c(ymin,ymax),col="blue3",pch=19,main="prob. transição")
+     ylab="diferença",ylim=c(ymin,ymax),col="blue3",pch=19,main="probabilidade de transição",cex.main=0.9)
 lines(N,abs(med.trans10),type="b",col="red3",pch=17)
-legend(2250,0.20, legend=c("0-0","1-0"),
+legend(1900,0.035, legend=c("0-0","1-0"),
        col=c("blue3","red3"), lty=c(1,1), cex=0.8, pch=c(19,17),pt.cex=1,
        box.lty=0,seg.len=3)
 
 plot(N,abs(med.emission0a),type="b",xlab="N",
-     ylab="diferença",ylim=c(ymin,ymax),col="blue3",pch=19,main="prob. emissão")
+     ylab="diferença",ylim=c(ymin,ymax),col="blue3",pch=19,main="probabilidade de emissão",cex.main=0.9)
 lines(N,abs(med.emission1a),type="b",col="red3",pch=17)
-legend(2250,0.20, legend=c("0-a","1-a"),
+legend(1100,0.035, legend=c("0-a","1-a"),
        col=c("blue3","red3"), lty=c(1,1), cex=0.8, pch=c(19,17),pt.cex=1,
        box.lty=0,seg.len=3)
 
 write.table(dif.trans00, file="dif_trans00", row.names=FALSE, col.names=FALSE)
+
