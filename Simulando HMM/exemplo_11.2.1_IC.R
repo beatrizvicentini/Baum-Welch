@@ -1,15 +1,14 @@
-#objetivo: simular um HMM a partir da matriz de transi??o e da matriz de emiss?o
-
+#objetivo: simular um HMM a partir da matriz de transicao e da matriz de emissao
 # 1)definir A com q=0.1, 0.5 e 0.9
 # 2)definir B com r=0.1, 0.5 e 0.9
 # 3)simular 3 ou mais HMM com as diferentes probs nas matrizes
-# 4)comparar as simula??es por gr?ficos
+# 4)comparar as simulacoes por graficos
 
 
 #install.packages('HiddenMarkov')
 library(HiddenMarkov)
 
-# A: matriz de prob. de transi??o k por k
+# A: matriz de prob. de transicao k por k
 # i : estado atual da cadeia
 # retornar um novo estado
 f.update <- function(A,i){
@@ -25,13 +24,6 @@ f.obs <- function(B,i){
   return(which(rmultinom(1,1,B[i,])==1))
 }
 
-#para definir B apenas achei fun??es que contam o numero de
-#observa??es e divide pelo total etc
-
-#pensei em talvez criar uma fun??o que a paetir da simula??o da cadeia
-#passar por cada estado e gerar uma observa??o baseada nas probs. Inicialmente
-#queria gerar uma observa??o a partir da matriz de emiss?o mas n?o achei tutorial
-#e acredito ser muito invi?vel, se n?o imposs?vel
 
 #q e r = 0.1
 #definindo A com q=0.1
@@ -41,7 +33,7 @@ r <- 0.02
 A <- matrix(c(0.5, 0.5, q, 1-q), byrow=TRUE, nrow=2)
 B <- matrix(c(0.5, 0.5, r, 1-r), byrow=TRUE, nrow=2)
 
-#SIMULANDO A CADEIA OCULTA/ n?o consegui deixar os estados como 1 e 2, apenas 0 e 1
+#SIMULANDO A CADEIA OCULTA
 n <- 1000
 x0 <- 1
 
@@ -65,9 +57,14 @@ table(cadeia.sim)
 table(cadeia.sim)/n
 table(cadeia.obs)/n
 
+
 barplot(table(cadeia.obs)/n,
         ylim = c(0,1),
-        main= bquote(r==.(r)))
+        main="Quantidade de estados ocultos da simulação do HMM quando", bquote(r==.(r)))
+##erro: Error in rep_len(width, NR) : attempt to replicate non-vector
+#In addition: Warning message:
+#In mean.default(width) : argumento não é numérico nem lógico: retornando NA
+
 
 
 #> table(cadeia.sim)
@@ -90,7 +87,8 @@ barplot(table(cadeia.obs)/n,
 
 #######-----------------------
 #######-----------------------
-# Emiss?o: Normal
+# Emissao: Normal
+  #vamos assumir que a distribuicao da sequencia observada seja uma normal(mi,sigma^2)
 # i estado oculto atual
 f.obs <- function(mu,sigma,i){
   return( rnorm(1,mu[i],sigma[i]) )
