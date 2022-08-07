@@ -25,8 +25,8 @@ f.obs <- function(B,i){
 }
 
 
-#q e r = 0.1
-#definindo A com q=0.1
+#q e r = 0.02
+#definindo A com q=0.2
 
 q <- 0.2
 r <- 0.02
@@ -55,12 +55,12 @@ cadeia.obs
 
 table(cadeia.sim)
 table(cadeia.sim)/n
-table(cadeia.obs)/n
+prop.obs <- table(cadeia.obs)/n
 
 
-barplot(table(cadeia.obs)/n,
+barplot(prop.obs,
         ylim = c(0,1),
-        main="Quantidade de estados ocultos da simulação do HMM quando", bquote(r==.(r)))
+        main="Proporção de símbolos emitidos pela cadeiao", bquote(r==.(r)))
 ##erro: Error in rep_len(width, NR) : attempt to replicate non-vector
 #In addition: Warning message:
 #In mean.default(width) : argumento não é numérico nem lógico: retornando NA
@@ -94,12 +94,11 @@ f.obs <- function(mu,sigma,i){
   return( rnorm(1,mu[i],sigma[i]) )
 }
 
+#parâmetros, matrizes, n e x0
 mu <- c(0,8)
 sigma <- c(1,1)
-
 q <- 0.2
 A <- matrix(c(0.5, 0.5, q, 1-q), byrow=TRUE, nrow=2)
-
 n <- 1000
 x0 <- 1
 
