@@ -1,12 +1,7 @@
-#objetivo: simular um HMM a partir da matriz de transicao e da matriz de emissao
-# 1)definir A com q=0.1, 0.5 e 0.9
-# 2)definir B com r=0.1, 0.5 e 0.9
-# 3)simular 3 ou mais HMM com as diferentes probs nas matrizes
-# 4)comparar as simulacoes por graficos
-
-
 #install.packages('HiddenMarkov')
 library(HiddenMarkov)
+
+#objetivo: simular um HMM a partir da matriz de transicao e da matriz de emissao
 
 # A: matriz de prob. de transicao k por k
 # i : estado atual da cadeia
@@ -27,7 +22,6 @@ f.obs <- function(B,i){
 
 #q e r = 0.02
 #definindo A com q=0.2
-
 q <- 0.2
 r <- 0.02
 A <- matrix(c(0.5, 0.5, q, 1-q), byrow=TRUE, nrow=2)
@@ -56,39 +50,16 @@ cadeia.obs
 table(cadeia.sim)
 table(cadeia.sim)/n
 prop.obs <- table(cadeia.obs)/n
-
-
-barplot(prop.obs,
+          
+names(prop.obs) <- c("a","b")          
+barplot(prop.obs, width=c(1,1),
         ylim = c(0,1),
-        main="Proporção de símbolos emitidos pela cadeiao", bquote(r==.(r)))
-##erro: Error in rep_len(width, NR) : attempt to replicate non-vector
-#In addition: Warning message:
-#In mean.default(width) : argumento não é numérico nem lógico: retornando NA
+        main="Proporção de símbolos emitidos pela cadeia")
 
 
-
-#> table(cadeia.sim)
-#cadeia.sim
-#0  1 
-#37 64 
-#> table(cadeia.sim)/n
-#cadeia.sim
-#0    1 
-#0.37 0.64
-#essa fun??o mostra que a cadeia n?o fica absorvente no estado 1 (ou 2 no livro)
-#como esper?vamos
-
-#GERANDO AS OBSERVA??ES
-#para um i percorrendo a cadeia, se o estado ? 0 ou 1, vai gerar uma observa??o
-#O1 ou O2 que provavelmente vai sair como 0 e 1. N?o sei exatamente como
-#implementar mas acredito que seja p?ss?vel com essa fun??o se adaptar um pouco
-#peguei ela do trabalho de processos onde geramos uma cadeia. preciso adaptar e
-#tirar a dependencia do estado anterior, s? n?o sei como ainda
-
-#######-----------------------
 #######-----------------------
 # Emissao: Normal
-  #vamos assumir que a distribuicao da sequencia observada seja uma normal(mi,sigma^2)
+  #vamos assumir que a distribuicao da sequencia observada seja uma normal(mu,sigma^2)
 # i estado oculto atual
 f.obs <- function(mu,sigma,i){
   return( rnorm(1,mu[i],sigma[i]) )
@@ -123,4 +94,3 @@ hist(cadeia.obs,
      freq = FALSE,
      xlab="observações",
      col="lightblue")
-
