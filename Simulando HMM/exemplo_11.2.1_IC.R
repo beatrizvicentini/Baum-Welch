@@ -23,7 +23,8 @@ f.obs <- function(B,i){
 barplot_simbolos <- function(q, r, titulo) {
   A <- matrix(c(0.5, 0.5, q, 1-q), byrow=TRUE, nrow=2)
   B <- matrix(c(0.5, 0.5, r, 1-r), byrow=TRUE, nrow=2)
-  
+  print(A)
+  print(B)
   #SIMULANDO A CADEIA OCULTA
   n <- 1000
   x0 <- 1
@@ -54,8 +55,7 @@ barplot_simbolos <- function(q, r, titulo) {
           main=titulo)
 }
 
-#q e r = 0.02
-#definindo A com q=0.2
+#alterando os valores de q e r
 q <- 0.1
 r <- 0.1
 barplot_simbolos(q,r,"Proporção de símbolos emitidos pela cadeia - q=0.1 e r=0.1")
