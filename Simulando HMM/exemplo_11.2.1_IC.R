@@ -20,42 +20,57 @@ f.obs <- function(B,i){
 }
 
 
-#q e r = 0.02
-#definindo A com q=0.2
-q <- 0.2
-r <- 0.02
-A <- matrix(c(0.5, 0.5, q, 1-q), byrow=TRUE, nrow=2)
-B <- matrix(c(0.5, 0.5, r, 1-r), byrow=TRUE, nrow=2)
-
-#SIMULANDO A CADEIA OCULTA
-n <- 1000
-x0 <- 1
-
-#valores da cadeia simulada
-cadeia.sim <- vector()
-#valores da sequencia observada
-cadeia.obs <- vector()
-cadeia.sim[1] <- x0
-cadeia.obs[1] <- f.obs(B,x0)
-for(i in 2:n){
-  cadeia.sim[i] <- f.update(A,cadeia.sim[i-1])
-  cadeia.obs[i] <- f.obs(B,cadeia.sim[i])
+barplot_simbolos <- function(q, r, titulo) {
+  A <- matrix(c(0.5, 0.5, q, 1-q), byrow=TRUE, nrow=2)
+  B <- matrix(c(0.5, 0.5, r, 1-r), byrow=TRUE, nrow=2)
+  
+  #SIMULANDO A CADEIA OCULTA
+  n <- 1000
+  x0 <- 1
+  
+  #valores da cadeia simulada
+  cadeia.sim <- vector()
+  #valores da sequencia observada
+  cadeia.obs <- vector()
+  cadeia.sim[1] <- x0
+  cadeia.obs[1] <- f.obs(B,x0)
+  for(i in 2:n){
+    cadeia.sim[i] <- f.update(A,cadeia.sim[i-1])
+    cadeia.obs[i] <- f.obs(B,cadeia.sim[i])
+  }
+  
+  cadeia.sim
+  cadeia.obs
+  #para ter uma cadeia com estados 0 e 1
+  #cadeia.sim - 1
+  
+  table(cadeia.sim)
+  table(cadeia.sim)/n
+  prop.obs <- table(cadeia.obs)/n
+            
+  names(prop.obs) <- c("a","b")          
+  barplot(prop.obs, width=c(1,1),
+          ylim = c(0,1),
+          main=titulo)
 }
 
-cadeia.sim
-cadeia.obs
-#para ter uma cadeia com estados 0 e 1
-#cadeia.sim - 1
+#q e r = 0.02
+#definindo A com q=0.2
+q <- 0.1
+r <- 0.1
+barplot_simbolos(q,r,"Proporção de símbolos emitidos pela cadeia - q=0.1 e r=0.1")
 
-table(cadeia.sim)
-table(cadeia.sim)/n
-prop.obs <- table(cadeia.obs)/n
-          
-names(prop.obs) <- c("a","b")          
-barplot(prop.obs, width=c(1,1),
-        ylim = c(0,1),
-        main="Proporção de símbolos emitidos pela cadeia")
+q <- 0.1
+r <- 0.9
+barplot_simbolos(q,r,"Proporção de símbolos emitidos pela cadeia - q=0.1 e r=0.9")
 
+q <- 0.9
+r <- 0.1
+barplot_simbolos(q,r,"Proporção de símbolos emitidos pela cadeia - q=0.9 e r=0.1")
+
+q <- 0.9
+r <- 0.9
+barplot_simbolos(q,r,"Proporção de símbolos emitidos pela cadeia - q=0.9 e r=0.9")
 
 #######-----------------------
 # Emissao: Normal
